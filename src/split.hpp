@@ -10,7 +10,7 @@ namespace str_utils {
     namespace detail {
 
         template <class _CharT = char>
-        std::vector<std::basic_string_view<_CharT>> split_str_impl(
+        std::vector<std::basic_string_view<_CharT>> split_str_ref_impl(
             std::basic_string_view<_CharT> view, std::basic_string_view<_CharT> sep)
         {
             if (view.empty())
@@ -53,9 +53,9 @@ namespace str_utils {
      * @param sep separator
      * @return vector of string views point to the parts of initial string
      */
-    auto split_str(const std::string &str, const std::string &sep = " ")
+    auto split_str_ref(const std::string &str, const std::string &sep = " ")
     {
-        return detail::split_str_impl<char>({str.data(), str.size()}, sep);
+        return detail::split_str_ref_impl<char>({str.data(), str.size()}, sep);
     }
 
     /**
@@ -65,9 +65,9 @@ namespace str_utils {
      * @param sep separator
      * @return vector of wstring views point to the parts of initial string
      */
-    auto split_wstr(const std::wstring &str, const std::wstring &sep = L" ")
+    auto split_wstr_ref(const std::wstring &str, const std::wstring &sep = L" ")
     {
-        return detail::split_str_impl<wchar_t>({str.data(), str.size()}, sep);
+        return detail::split_str_ref_impl<wchar_t>({str.data(), str.size()}, sep);
     }
 
 } // namespace str

@@ -18,19 +18,19 @@ void successSplitImpl(const String &input, const String &sep, const Tokens &resT
 
 TEST(StrSplit, TestSplit_SuccessSplit)
 {
-    successSplitImpl<std::string>(strSample(), " ", strTokens(), &str_utils::split_str);
+    successSplitImpl<std::string>(strSample(), " ", strTokens(), &str_utils::split_str_ref);
 }
 
 TEST(WStrSplit, TestSplit_SuccessSplit)
 {
-    successSplitImpl<std::wstring>(wstrSample(), L" ", wstrTokens(), &str_utils::split_wstr);
+    successSplitImpl<std::wstring>(wstrSample(), L" ", wstrTokens(), &str_utils::split_wstr_ref);
 }
 
 TEST(StrSplit, TestSplit_EmptyInput)
 {
     std::string input = "";
 
-    auto tokens = str_utils::split_str(input, " ");
+    auto tokens = str_utils::split_str_ref(input, " ");
     ASSERT_EQ(tokens.size(), 0);
 }
 
@@ -38,7 +38,7 @@ TEST(StrSplit, TestSplit_LongDelim)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str(input, "qqqqqqqqqqqqqqqq");
+    auto tokens = str_utils::split_str_ref(input, "qqqqqqqqqqqqqqqq");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
@@ -47,7 +47,7 @@ TEST(StrSplit, TestSplit_EmptyDelim)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str(input, "");
+    auto tokens = str_utils::split_str_ref(input, "");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
@@ -56,7 +56,7 @@ TEST(StrSplit, TestSplit_InputWithoutDelim)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str(input, "qq");
+    auto tokens = str_utils::split_str_ref(input, "qq");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
@@ -65,7 +65,7 @@ TEST(StrSplit, TestSplit_ResultIsAView)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str(input, " ");
+    auto tokens = str_utils::split_str_ref(input, " ");
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_EQ(tokens.at(0), "Lorem");
     ASSERT_EQ(tokens.at(1), "inpsum");
