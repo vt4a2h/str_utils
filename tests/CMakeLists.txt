@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9.0 FATAL_ERROR)
 
-project(SplitStrTests)
+project(StrUtilsTests)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++1z")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")

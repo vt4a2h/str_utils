@@ -5,18 +5,18 @@
 #include <vector>
 #include <algorithm>
 
-namespace str {
+namespace str_utils {
 
     namespace detail {
 
         template <class _CharT = char>
         std::vector<std::basic_string_view<_CharT>> split_str_impl(
-            std::basic_string_view<_CharT> view, std::basic_string_view<_CharT> delim)
+            std::basic_string_view<_CharT> view, std::basic_string_view<_CharT> sep)
         {
             if (view.empty())
                 return {};
 
-            if (delim.empty() || delim.size() >= view.size())
+            if (sep.empty() || sep.size() >= view.size())
                 return {{view}};
 
             std::vector<std::basic_string_view<_CharT>> result;
@@ -24,9 +24,9 @@ namespace str {
             auto first = std::begin(view);
             auto last = std::end(view);
 
-            auto delimFirst = std::begin(delim);
-            auto delimLast = std::end(delim);
-            auto delimLen = std::distance(std::begin(delim), std::end(delim));
+            auto delimFirst = std::begin(sep);
+            auto delimLast = std::end(sep);
+            auto delimLen = std::distance(std::begin(sep), std::end(sep));
 
             auto delimCurrent = std::begin(view);
 
@@ -46,14 +46,14 @@ namespace str {
     } // namespace detail
 
 
-    auto split_str(const std::string &str, const std::string &delim = " ")
+    auto split_str(const std::string &str, const std::string &sep = " ")
     {
-        return detail::split_str_impl<char>({str.data(), str.size()}, delim);
+        return detail::split_str_impl<char>({str.data(), str.size()}, sep);
     }
 
-    auto split_wstr(const std::wstring &str, const std::wstring &delim = L" ")
+    auto split_wstr(const std::wstring &str, const std::wstring &sep = L" ")
     {
-        return detail::split_str_impl<wchar_t>({str.data(), str.size()}, delim);
+        return detail::split_str_impl<wchar_t>({str.data(), str.size()}, sep);
     }
 
 } // namespace str
