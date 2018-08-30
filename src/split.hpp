@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <regex>
+
+// TODO: remove
+#include <iostream>
 
 namespace str_utils {
 
@@ -46,6 +50,28 @@ namespace str_utils {
             return result;
         }
 
+        template <
+            class _CharT        = char                          ,
+            class TokenType     = std::basic_string_view<_CharT>,
+            class ContainerType = std::vector<TokenType>        ,
+            class RegexType     = std::basic_regex<_CharT>      ,
+            class IteratorType  = typename TokenType::iterator>
+        ContainerType split_str_re_impl(IteratorType begin, IteratorType end, const RegexType &re)
+        {
+            ContainerType result;
+
+            std::match_results<const _CharT*> match;
+
+            auto len = std::distance(begin, end);
+            while (std::regex_search(&*begin, match, re)) {
+                for (auto it = match.begin() + 1; it != match.end(); ++it)
+                    result.emplace_back(it->first, it->length());
+                std::advance(begin, len - match.suffix().length());
+            }
+
+            return result;
+        }
+
     } // namespace detail
 
 
@@ -59,6 +85,11 @@ namespace str_utils {
     auto split_str_ref(const std::string &str, const std::string &sep = " ")
     {
         return detail::split_str_impl({str.data(), str.size()}, {sep.data(), sep.size()});
+    }
+
+    auto split_str_ref(const std::string &str, const std::regex &re)
+    {
+        return detail::split_str_re_impl(std::begin(str), std::end(str), re);
     }
 
     /**
