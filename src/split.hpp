@@ -55,7 +55,7 @@ namespace str_utils {
             class TokenType     = std::basic_string_view<_CharT>,
             class ContainerType = std::vector<TokenType>        ,
             class RegexType     = std::basic_regex<_CharT>      ,
-            class IteratorType  = typename TokenType::iterator>
+            class IteratorType  = typename TokenType::iterator  >
         ContainerType split_str_re_impl(IteratorType begin, IteratorType end, const RegexType &re)
         {
             ContainerType result;
@@ -64,8 +64,12 @@ namespace str_utils {
 
             auto len = std::distance(begin, end);
             while (std::regex_search(&*begin, match, re)) {
-                for (auto it = match.begin() + 1; it != match.end(); ++it)
+                if (match.size() <= 1)
+                    break;
+
+                for (auto it = std::begin(match) + 1; it != std::end(match); ++it)
                     result.emplace_back(it->first, it->length());
+
                 std::advance(begin, len - match.suffix().length());
             }
 
@@ -98,11 +102,17 @@ namespace str_utils {
      * @param sep separator
      * @return vector of tokens, each of them represented as std::string
      */
-    auto split_str(const std::string &str, const std::string &sep = " ")
+    auto split_str(const std::string &str, const std::string &sep)
     {
         return detail::split_str_impl<char, std::string>({str.data(), str.size()},
                                                          {sep.data(), sep.size()});
     }
+
+    auto split_str(const std::string &str, const std::regex &re)
+    {
+        return detail::split_str_re_impl<char, std::string>(std::begin(str), std::end(str), re);
+    }
+
 
     /**
      * @brief Function for splitting std::wstring
@@ -111,9 +121,14 @@ namespace str_utils {
      * @param sep separator
      * @return vector of wstring views point to the parts of initial string
      */
-    auto split_wstr_ref(const std::wstring &str, const std::wstring &sep = L" ")
+    auto split_wstr_ref(const std::wstring &str, const std::wstring &sep)
     {
         return detail::split_str_impl<wchar_t>({str.data(), str.size()}, {sep.data(), sep.size()});
+    }
+
+    auto split_wstr_ref(const std::wstring &str, const std::wregex &re)
+    {
+        return detail::split_str_re_impl<wchar_t>(std::begin(str), std::end(str), re);
     }
 
     /**
@@ -126,6 +141,11 @@ namespace str_utils {
     {
         return detail::split_str_impl<wchar_t, std::wstring>({str.data(), str.size()},
                                                              {sep.data(), sep.size()});
+    }
+
+    auto split_wstr(const std::wstring &str, const std::wregex &re)
+    {
+        return detail::split_str_re_impl<wchar_t, std::wstring>(std::begin(str), std::end(str), re);
     }
 
 } // namespace str
