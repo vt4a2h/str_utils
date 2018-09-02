@@ -84,13 +84,18 @@ namespace str_utils {
      * @note @p str should live long enough
      * @param str input string
      * @param sep separator
-     * @return vector of string views point to the parts of initial string
+     * @return std::vector of string views point to the parts of initial string
      */
     auto split_str_ref(const std::string &str, const std::string &sep = " ")
     {
         return detail::split_str_impl({str.data(), str.size()}, {sep.data(), sep.size()});
     }
 
+    /**
+     * @brief Splits @p str into substrings wherever the regular expression @p re matches
+     * @note @p str should live long enough
+     * @return std::vector of string views point to the parts of initial string
+     */
     auto split_str_ref(const std::string &str, const std::regex &re)
     {
         return detail::split_str_re_impl(std::begin(str), std::end(str), re);
@@ -100,7 +105,7 @@ namespace str_utils {
      * @brief Function for splitting std::string
      * @param str input string
      * @param sep separator
-     * @return vector of tokens, each of them represented as std::string
+     * @return std::vector of tokens, each of them represented as std::string
      */
     auto split_str(const std::string &str, const std::string &sep)
     {
@@ -108,6 +113,10 @@ namespace str_utils {
                                                          {sep.data(), sep.size()});
     }
 
+    /**
+     * @brief Splits @p str into substrings wherever the regular expression @p re matches
+     * @return std::vector of strings point to the parts of initial string
+     */
     auto split_str(const std::string &str, const std::regex &re)
     {
         return detail::split_str_re_impl<char, std::string>(std::begin(str), std::end(str), re);
@@ -119,13 +128,18 @@ namespace str_utils {
      * @note @p str should live long enough
      * @param str input string
      * @param sep separator
-     * @return vector of wstring views point to the parts of initial string
+     * @return std::vector of wstring views point to the parts of initial string
      */
     auto split_wstr_ref(const std::wstring &str, const std::wstring &sep)
     {
         return detail::split_str_impl<wchar_t>({str.data(), str.size()}, {sep.data(), sep.size()});
     }
 
+    /**
+     * @brief Splits @p str into substrings wherever the regular expression @p re matches
+     * @note @p str should live long enough
+     * @return std::vector of string views point to the parts of initial string
+     */
     auto split_wstr_ref(const std::wstring &str, const std::wregex &re)
     {
         return detail::split_str_re_impl<wchar_t>(std::begin(str), std::end(str), re);
@@ -135,7 +149,7 @@ namespace str_utils {
      * @brief Function for splitting std::wstring
      * @param str input string
      * @param sep separator
-     * @return vector of tokens, each of them represented as std::wstring
+     * @return std::vector of tokens, each of them represented as std::wstring
      */
     auto split_wstr(const std::wstring &str, const std::wstring &sep = L" ")
     {
@@ -143,6 +157,10 @@ namespace str_utils {
                                                              {sep.data(), sep.size()});
     }
 
+    /**
+     * @brief Splits @p str into substrings wherever the regular expression @p re matches
+     * @return std::vector of strings point to the parts of initial string
+     */
     auto split_wstr(const std::wstring &str, const std::wregex &re)
     {
         return detail::split_str_re_impl<wchar_t, std::wstring>(std::begin(str), std::end(str), re);
