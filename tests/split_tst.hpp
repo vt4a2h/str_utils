@@ -16,58 +16,58 @@ void successSplitImpl(const String &input, const String &sep, const Tokens &resT
     ASSERT_TRUE(std::equal(std::begin(resTokens), std::end(resTokens), std::begin(tokens)));
 }
 
-TEST(StrSplitRef, SuccessSplit)
+TEST(StrSplitView, SuccessSplit)
 {
     using FType = std::vector<std::string_view>(*)(const std::string&, const std::string &);
-    successSplitImpl<std::string>(strSample(), " ", strTokens(), static_cast<FType>(&str_utils::split_str_ref));
+    successSplitImpl<std::string>(strSample(), " ", strTokens(), static_cast<FType>(&str_utils::split_view));
 }
 
-TEST(WStrSplitRef, SuccessSplit)
+TEST(WStrSplitView, SuccessSplit)
 {
     using FType = std::vector<std::wstring_view>(*)(const std::wstring&, const std::wstring &);
-    successSplitImpl<std::wstring>(wstrSample(), L" ", wstrTokens(), static_cast<FType>(&str_utils::split_wstr_ref));
+    successSplitImpl<std::wstring>(wstrSample(), L" ", wstrTokens(), static_cast<FType>(&str_utils::split_view));
 }
 
-TEST(StrSplitRef, EmptyInput)
+TEST(StrSplitView, EmptyInput)
 {
     std::string input = "";
 
-    auto tokens = str_utils::split_str_ref(input, " ");
+    auto tokens = str_utils::split_view(input, " ");
     ASSERT_EQ(tokens.size(), 0);
 }
 
-TEST(StrSplitRef, LongSep)
+TEST(StrSplitView, LongSep)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str_ref(input, "qqqqqqqqqqqqqqqq");
+    auto tokens = str_utils::split_view(input, "qqqqqqqqqqqqqqqq");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
 
-TEST(StrSplitRef, EmptySep)
+TEST(StrSplitView, EmptySep)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str_ref(input, "");
+    auto tokens = str_utils::split_view(input, "");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
 
-TEST(StrSplitRef, InputWithoutSep)
+TEST(StrSplitView, InputWithoutSep)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str_ref(input, "qq");
+    auto tokens = str_utils::split_view(input, "qq");
     ASSERT_EQ(tokens.size(), 1);
     ASSERT_EQ(tokens.at(0), input);
 }
 
-TEST(StrSplitRef, ResultIsAView)
+TEST(StrSplitView, ResultIsAView)
 {
     std::string input = "Lorem inpsum";
 
-    auto tokens = str_utils::split_str_ref(input, " ");
+    auto tokens = str_utils::split_view(input, " ");
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_EQ(tokens.at(0), "Lorem");
     ASSERT_EQ(tokens.at(1), "inpsum");
@@ -76,13 +76,13 @@ TEST(StrSplitRef, ResultIsAView)
     ASSERT_EQ(tokens.at(1).data(), input.data() + 6);
 }
 
-TEST(StrSplit, EqualToSplitRef)
+TEST(StrSplit, EqualToSplitView)
 {
     auto input = strSample();
     auto tokens = strTokens();
 
-    auto refTokens = str_utils::split_str_ref(input, " ");
-    auto copiedTokens = str_utils::split_str(input, " ");
+    auto refTokens = str_utils::split_view(input, " ");
+    auto copiedTokens = str_utils::split(input, " ");
 
     ASSERT_EQ(refTokens.size(), copiedTokens.size());
     ASSERT_TRUE(std::equal(std::begin(refTokens), std::end(refTokens), std::begin(copiedTokens)));
@@ -93,7 +93,7 @@ TEST(StrSplit, ResultIsACopy)
     std::string input = "Lorem inpsum";
 
     // The input variable is not used intentionally
-    auto tokens = str_utils::split_str("Lorem inpsum", " ");
+    auto tokens = str_utils::split("Lorem inpsum", " ");
 
     ASSERT_EQ(tokens.size(), 2);
 
@@ -109,7 +109,7 @@ TEST(StrSplitRe, SuccessSplit)
     std::string in = "Lorem inpsum";
     std::regex re{"([a-zA-Z]+)"};
 
-    auto tokens = str_utils::split_str_ref(in, re);
+    auto tokens = str_utils::split_view(in, re);
 
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_EQ(tokens.at(0), "Lorem");
@@ -121,7 +121,7 @@ TEST(WStrSplitRe, SuccessSplit)
     std::wstring in = L"Lorem inpsum";
     std::wregex re{L"([a-zA-Z]+)"};
 
-    auto tokens = str_utils::split_wstr(in, re);
+    auto tokens = str_utils::split(in, re);
 
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_EQ(tokens.at(0), L"Lorem");
@@ -133,7 +133,7 @@ TEST(StrSplitRe, ResultIsAView)
     std::string in = "Lorem inpsum";
     std::regex re{"([a-zA-Z]+)"};
 
-    auto tokens = str_utils::split_str_ref(in, re);
+    auto tokens = str_utils::split_view(in, re);
 
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_EQ(tokens.at(0).data(), in.data());
@@ -145,7 +145,7 @@ TEST(StrSplitRe, ResultIsACopy)
     std::string in = "Lorem inpsum";
     std::regex re{"([a-zA-Z]+)"};
 
-    auto tokens = str_utils::split_str(in, re);
+    auto tokens = str_utils::split(in, re);
 
     ASSERT_EQ(tokens.size(), 2);
     ASSERT_NE(tokens.at(0).data(), in.data());
@@ -157,7 +157,7 @@ TEST(StrSplitRe, NoMatches)
     std::string in = "Lorem inpsum";
     std::regex re{"(\\d+)"};
 
-    auto tokens = str_utils::split_str_ref(in, re);
+    auto tokens = str_utils::split_view(in, re);
 
     ASSERT_EQ(tokens.size(), 0);
 }
@@ -167,7 +167,7 @@ TEST(StrSplitRe, EmptyInput)
     std::string in = "";
     std::regex re{"(\\d+)"};
 
-    auto tokens = str_utils::split_str_ref(in, re);
+    auto tokens = str_utils::split_view(in, re);
 
     ASSERT_EQ(tokens.size(), 0);
 }
@@ -177,7 +177,7 @@ TEST(StrSplitRe, EmptyRegex)
     std::string in = "Lorem inpsum";
     std::regex re{""};
 
-    auto tokens = str_utils::split_str_ref(in, re);
+    auto tokens = str_utils::split_view(in, re);
 
     ASSERT_EQ(tokens.size(), 0);
 }
