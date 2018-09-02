@@ -19,7 +19,7 @@ std::regex re{"([a-zA-Z]+)"};
 
 auto tokens = str_utils::split_view(in, re); // ==> ["Lorem", "inpsum"]
 ```
-Suffix `_view` means the same that in the example above: the result vector contains `string_view` objects. If you need a vector of copies, try using a function without `_view` prefix.
+Suffix `_view` means the same that in the example above: the result vector contains `string_view` objects. If you need a vector of copies, try using a function without `_view` suffix.
 
 Implemented:
 - [X] Splitting `std::basic_string<_CharT>` into substrings whenever a separator occurs
