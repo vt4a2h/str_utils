@@ -75,7 +75,6 @@ namespace str_utils {
 
     } // namespace detail
 
-
     /**
      * @brief Function for splitting std::string
      * @note @p str should live long enough
@@ -163,4 +162,4 @@ namespace str_utils {
         return detail::split_re_impl<wchar_t, std::wstring>(std::begin(str), std::end(str), re);
     }
 
-} // namespace str
+} // namespace str_utils
