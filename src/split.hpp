@@ -52,7 +52,7 @@ namespace str_utils {
             class TokenType     = std::basic_string_view<_CharT>,
             class ContainerType = std::vector<TokenType>        ,
             class RegexType     = std::basic_regex<_CharT>      ,
-            class IteratorType  = typename TokenType::iterator  >
+            class IteratorType>
         ContainerType split_re_impl(IteratorType begin, IteratorType end, const RegexType &re)
         {
             ContainerType result;
@@ -66,6 +66,9 @@ namespace str_utils {
 
                 for (auto it = std::begin(match) + 1; it != std::end(match); ++it)
                     result.emplace_back(it->first, it->length());
+
+                if (match.suffix().length() == 0)
+                    break;
 
                 std::advance(begin, len - match.suffix().length());
             }
