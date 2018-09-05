@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "split_tst.hpp"
+#include "join_tst.hpp"
 
 int main(int argc, char **argv)
 {
