@@ -1,6 +1,7 @@
 # Convenient helpers for standard C++ string classes
 
-Only splitting functionality is added now. You can use it like this:
+## Split
+Basic splitting functionality can be used like this:
 ```cpp
 std::string input = "Lorem inpsum";
 auto tokens = str_utils::split_view(input, " "); // ==> ["Lorem", "inpsum"]
@@ -21,9 +22,16 @@ auto tokens = str_utils::split_view(in, re); // ==> ["Lorem", "inpsum"]
 ```
 Suffix `_view` means the same that in the example above: the result vector contains `string_view` objects. If you need a vector of copies, try using a function without `_view` suffix.
 
+## Join
+You can concatenate strings (or string views) stored in a container of any type (which supports at least forward iterators):
+```cpp
+std::vector<std::string> in{"Lorem", "inpsum"};
+
+auto result = str_utils::join(in, std::string(" ")); ==> "Lorem inpsum"
+```
+See more examples in the test directory.
+
 Implemented:
 - [X] Splitting `std::basic_string<_CharT>` into substrings whenever a separator occurs
 - [X] Splitting string using regular expressions
-
-TODO:
-- [ ] Joining strings
+- [X] Joining strings
